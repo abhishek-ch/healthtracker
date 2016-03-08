@@ -1,6 +1,6 @@
-# watchkit_healthapp
+# healthtracker
 
-An iOS based Health Monitoring App runs on Apple Watch & iPhone
+An iOS based Health Monitoring App run on Apple Watch & iPhone
 
 ## Features
 
