@@ -12,6 +12,19 @@ import ContactsUI
 import MessageUI
 import HealthKit
 
+extension NSDate {
+    var startOfDay: NSDate {
+        return NSCalendar.currentCalendar().startOfDayForDate(self)
+    }
+    
+    var endOfDay: NSDate? {
+        let components = NSDateComponents()
+        components.day = 1
+        components.second = -1
+        return NSCalendar.currentCalendar().dateByAddingComponents(components, toDate: startOfDay, options: NSCalendarOptions())
+    }
+}
+
 class ConfigurationTableViewController: UITableViewController,CNContactPickerDelegate,MFMessageComposeViewControllerDelegate {
     
     
@@ -39,26 +52,54 @@ class ConfigurationTableViewController: UITableViewController,CNContactPickerDel
     var addNameStatus = false
     
     let defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    let shareDate = DataSingleton.sharedInstance
+    // Create a MessageComposer
+    let messageComposer = MessageComposer()
+    var defaultsGrp: NSUserDefaults = NSUserDefaults(suiteName: "group.com.myheart.health.MyHealth")!
     
     //Save the object values
     @IBAction func saveConfig(sender: AnyObject) {
         //sets the key for each field in the configuration
-     
-        defaults.removeObjectForKey("nameTF")
-        defaults.removeObjectForKey("phoneTF")
-        defaults.removeObjectForKey("emergencyTF1")
-        defaults.removeObjectForKey("emergencyTF2")
-        defaults.removeObjectForKey("emergencyTF3")
-        
-        defaults.setObject(nameTF.text, forKey: "nameTF")
-        defaults.setObject(phoneTF.text, forKey: "phoneTF")
-        defaults.setObject(emergencyTF1.text, forKey: "emergencyTF1")
-        defaults.setObject(emergencyTF2.text, forKey: "emergencyTF2")
-        defaults.setObject(emergencyTF3.text, forKey: "emergencyTF3")
-        
-        defaults.synchronize()
+        saveDefaults()
+    
     }
     
+    func saveDefaults(){
+ 
+        
+        print("phoneTF.textphoneTF.text" ,phoneTF.text)
+        defaultsGrp.setValue(nameTF.text, forKey: "name")
+        defaultsGrp.setValue(phoneTF.text, forKey: "mainphone")
+        shareDate.phoneName = nameTF.text!
+        shareDate.phoneNumber = phoneTF.text!
+        
+        defaultsGrp.setValue(emergencyTF1.text, forKey: "emergency1")
+        defaultsGrp.setValue(emergencyTF2.text, forKey: "emergency2")
+        defaultsGrp.setValue(emergencyTF3.text, forKey: "emergency3")
+        
+//        defaultsGrp.setValue(81.0, forKey: "heartRateMain")
+        defaultsGrp.synchronize()
+        
+        updateBasicDefaults()
+        print("The value no>>>>>>w is=s> ",self.defaults.objectForKey("phoneTF"))
+    }
+    
+    func updateBasicDefaults() {
+        self.defaults.removeObjectForKey("nameTF")
+        self.defaults.removeObjectForKey("phoneTF")
+        self.defaults.removeObjectForKey("emergencyTF1")
+        self.defaults.removeObjectForKey("emergencyTF2")
+        self.defaults.removeObjectForKey("emergencyTF3")
+        
+
+        self.defaults.setValue(nameTF.text, forKey: "nameTF")
+        self.defaults.setValue(phoneTF.text, forKey: "phoneTF")
+        self.defaults.setValue(emergencyTF1.text, forKey: "emergencyTF1")
+        self.defaults.setValue(emergencyTF2.text, forKey: "emergencyTF2")
+        self.defaults.setValue(emergencyTF3.text, forKey: "emergencyTF3")
+        
+        self.defaults.synchronize()
+    }
     
     @IBAction func addPhoneAction(sender: AnyObject) {
         addNameStatus = true
@@ -92,77 +133,56 @@ class ConfigurationTableViewController: UITableViewController,CNContactPickerDel
     
     
     
-    // A wrapper function to indicate whether or not a text message can be sent from the user's device
-    func canSendText() -> Bool {
-        return MFMessageComposeViewController.canSendText()
-    }
+
     
-    // Configures and returns a MFMessageComposeViewController instance
-    func configuredMessageComposeViewController(textMessageRecipients:[String] ,textBody body:String) -> MFMessageComposeViewController {
-        let messageComposeVC = MFMessageComposeViewController()
-        messageComposeVC.messageComposeDelegate = self  //  Make sure to set this property to self, so that the controller can be dismissed!
-        messageComposeVC.recipients = textMessageRecipients
-        messageComposeVC.body = body
-        return messageComposeVC
-    }
-    
-    
-    // Configures and returns a MFMessageComposeViewController instance
-    func configuredMessageComposeViewController() -> MFMessageComposeViewController {
-        let messageComposeVC = MFMessageComposeViewController()
-        messageComposeVC.messageComposeDelegate = self  //  Make sure to set this property to self, so that the controller can be dismissed!
-        messageComposeVC.recipients = ["1-800-867-5309"]
-        messageComposeVC.body = "Hey friend - Just sending a text message in-app using Swift!"
-        return messageComposeVC
-    }
-    
-    // Create a MessageComposer
-    let messageComposer = MessageComposer()
-    
+
     //TODO close
     @IBAction func cancelConfig(sender: AnyObject) {
-        print("Cancel " ,MFMessageComposeViewController.canSendText())
+        
+    } 
+    
+    
+    
+let healthStore: HKHealthStore = HKHealthStore()
+    
+    func query(){
+        let dataTypesToRead = NSSet(objects: HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)!)
+        
+        healthStore.requestAuthorizationToShareTypes(nil, readTypes: dataTypesToRead as! Set<HKObjectType>, completion: { [unowned self] (success, error) in
+            if success {
+                let stepsCount = HKQuantityType.quantityTypeForIdentifier(
+                    HKQuantityTypeIdentifierStepCount)
+                let sumOption = HKStatisticsOptions.CumulativeSum
+                
+                let statisticsSumQuery = HKStatisticsQuery(quantityType: stepsCount!, quantitySamplePredicate: nil,
+                    options: sumOption)
+                { [unowned self] (query, result, error) in
+                    if let sumQuantity = result?.sumQuantity() {
+                        let numberOfSteps = Int(sumQuantity.doubleValueForUnit(HKUnit.countUnit()))
+                        print("numberOfStepsnumberOfStepsnumberOfSteps ->> ",numberOfSteps)
+                        NSLog("numberOfStepsnumberOfSteps%d", numberOfSteps)
+                        
+                    }
+                    //            self.activityIndicator.stopAnimating()
+                    
+                }
+                
+                // Don't forget to execute the query!
+                self.healthStore.executeQuery(statisticsSumQuery)
+            } else {
+                print("hsacbhjasbcbahjbshj")
+            }
+            })
         
         
-        
-        
-        // Make sure the device can send text messages
-        if (messageComposer.canSendText()) {
-            // Obtain a configured MFMessageComposeViewController
-            let messageComposeVC = messageComposer.configuredMessageComposeViewController()
-            
-            // Present the configured MFMessageComposeViewController instance
-            // Note that the dismissal of the VC will be handled by the messageComposer instance,
-            // since it implements the appropriate delegate call-back
-            presentViewController(messageComposeVC, animated: true, completion: nil)
-        } else {
-            // Let the user know if his/her device isn't able to send text messages
-            let errorAlert = UIAlertView(title: "Cannot Send Text Message", message: "Your device is not able to send text messages.", delegate: self, cancelButtonTitle: "OK")
-            errorAlert.show()
-        }
-        
-        
-       // navigationController?.popToRootViewControllerAnimated(true)
-       // self.dismissViewControllerAnimated(true, completion: nil)
-//        let defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        let phoneNumberArray = ["(415) 555-4387"]
-//        let userNumber = "(415) 555-4387"
-//        if (MFMessageComposeViewController.canSendText()) {
-//            print("MESSAGE Controller")
-//            let controller = MFMessageComposeViewController()
-//            controller.body = "This Boy is not Taking medicine on Time"
-//            controller.recipients = ["(415) 555-4387"]
-//            controller.messageComposeDelegate = self
-//            self.presentViewController(controller, animated: true, completion: nil)
-//        }else{
-//            print("Can't Send Message")
-//            //UIApplication.sharedApplication().openURL(NSURL(string: "telprompt://\(userNumber)")!)
-//            UIApplication.sharedApplication().openURL(NSURL(string: "tel://9809088798")!)
-//            callNumber("7178881234")
-//           }
-        
+  
     }
+    
+ 
+    
 
+    
+    
     
     private func callNumber(phoneNumber:String) {
         if let phoneCallURL:NSURL = NSURL(string:"tel://\(phoneNumber)") {
@@ -205,40 +225,35 @@ class ConfigurationTableViewController: UITableViewController,CNContactPickerDel
     
 
     
-    //This method reads the heart rate every x seconds and ensure that it doesn't crosses the
-    //limit and if it does, as of now it throws an alert to the user
-    //can be made to call user once the call api works properly
-    func readHeartRate(){
-     
-        let heartRate = self.defaults.doubleForKey("heartRate")
-        print("READ THE VAKUE ",heartRate)
-        if(heartRate > 60.0 || heartRate < 55.0){
-            
-            //reset the heart Rate value to not get triggered
-            // self.defaults.setDouble(58.0, forKey: "heartRate")
-            // self.defaults.synchronize()
-            
-            let currDate = NSDate()
-            
-            let notification:UILocalNotification = UILocalNotification()
-            //trigger the notification after a while
-            notification.fireDate = NSDate(timeIntervalSinceNow: 20)
-            notification.category = "HEART_RATE_ALERT"
-            notification.alertBody = "Heart Rate Warning!!!"
-            notification.fireDate = currDate
-            
-            UIApplication.sharedApplication().scheduleLocalNotification(notification)
-        
- 
-        }
-  
-    }
+
     
     
     //refer http://stackoverflow.com/questions/27642492/saving-and-loading-an-integer-on-xcode-swift
     //load default values once you launch the App
     func loadDefaultValues(){
-        let defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        
+//        if let mainphone = defaultsGrp.valueForKey("name"){
+//            nameTF?.text = mainphone as? String
+//        }
+//        if let mainphone = defaultsGrp.valueForKey("mainphone"){
+//            phoneTF?.text = mainphone as? String
+//        }
+//        if let mainphone = defaultsGrp.valueForKey("emergency1"){
+//            emergencyTF1?.text = mainphone as? String
+//        }
+//        if let mainphone = defaultsGrp.valueForKey("emergency1"){
+//            emergencyTF2?.text = mainphone as? String
+//        }
+//        if let mainphone = defaultsGrp.valueForKey("emergency1"){
+//            emergencyTF3?.text = mainphone as? String
+//        }
+        
+        self.loadBasicValues()
+        saveDefaults()
+        
+    }
+    
+    func loadBasicValues() {
         nameTF?.text = defaults.valueForKey("nameTF") as? String
         phoneTF?.text = defaults.valueForKey("phoneTF") as? String
         
@@ -250,12 +265,10 @@ class ConfigurationTableViewController: UITableViewController,CNContactPickerDel
     func authorizeAddressBookAddress(){
         
 
-        
-        
         switch CNContactStore.authorizationStatusForEntityType(.Contacts){
         case .Authorized:
             print("Authorized")
-            //completionHandler(accessGranted: true)
+//            completionHandler(accessGranted: true)
         case .NotDetermined:
             print("Not Determined")
             self.requestContactsAccess()
@@ -319,10 +332,6 @@ class ConfigurationTableViewController: UITableViewController,CNContactPickerDel
             }
             
         }
-    
-
-
- 
     }
     
 

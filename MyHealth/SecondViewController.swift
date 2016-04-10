@@ -21,6 +21,7 @@ class SecondViewController: UITableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
          NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshList", name: "TodoListShouldRefresh", object: nil)
+         NSTimer.scheduledTimerWithTimeInterval(Constants.EXCERCISE_ALERT_FREQUENCY_in_sec, target: self, selector: #selector(SecondViewController.activateExcercise), userInfo: nil, repeats: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,9 +33,23 @@ class SecondViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         refreshList()
+      
     }
     
-    /** refresh the entire table list to update the new item 
+    func activateExcercise(){
+        let currDate = NSDate()
+        
+        let notification:UILocalNotification = UILocalNotification()
+        //trigger the notification after a while
+        notification.fireDate = NSDate(timeIntervalSinceNow: 5)
+        notification.category = "EXCERCISE_CATEGORY"
+        notification.alertBody = "Excercise Done !!!"
+        notification.fireDate = currDate
+        
+        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+    }
+    
+    /** refresh the entire table list to update the new item
      
      Note :Limiting itto schedule 64 local notifications. If try to schedule
      more, the system will keep the 64 soonest firing notifications

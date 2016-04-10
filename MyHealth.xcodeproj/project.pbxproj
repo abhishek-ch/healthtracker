@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2826D3E81CAC500C00A9FF71 /* DataSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2826D3E71CAC500C00A9FF71 /* DataSingleton.swift */; };
+		2826D3E91CAC520300A9FF71 /* DataSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2826D3E71CAC500C00A9FF71 /* DataSingleton.swift */; };
 		2827D31C1BF4F76D00C23D34 /* RepeatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2827D31B1BF4F76D00C23D34 /* RepeatTableViewController.swift */; };
 		285D44671BECF2C900E37B10 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D44661BECF2C900E37B10 /* AppDelegate.swift */; };
 		285D44691BECF2C900E37B10 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D44681BECF2C900E37B10 /* FirstViewController.swift */; };
@@ -24,11 +26,12 @@
 		285D44981BECF2EA00E37B10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 285D44971BECF2EA00E37B10 /* Assets.xcassets */; };
 		285D449C1BECF2EA00E37B10 /* MyHealthWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 285D447C1BECF2EA00E37B10 /* MyHealthWatch.app */; };
 		285D44A61BECF77400E37B10 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 285D44A51BECF77400E37B10 /* HealthKit.framework */; };
-		285D44AC1BED209D00E37B10 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 285D44AB1BED209D00E37B10 /* HealthKit.framework */; };
 		285D44B21BEE8BAC00E37B10 /* MedicineListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D44B11BEE8BAC00E37B10 /* MedicineListTVC.swift */; };
 		285D44B41BEE8F6100E37B10 /* TodoMedicineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D44B31BEE8F6100E37B10 /* TodoMedicineItem.swift */; };
 		285D44B61BEE8FE700E37B10 /* TodoMedicineList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D44B51BEE8FE700E37B10 /* TodoMedicineList.swift */; };
 		285D44B91BF07A8400E37B10 /* MedicineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285D44B81BF07A8400E37B10 /* MedicineTableViewController.swift */; };
+		2881CADC1CAEF8E100A33CB7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2881CADB1CAEF8E100A33CB7 /* Constants.swift */; };
+		288E028D1CAC62BF002FF65A /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288E028C1CAC62BF002FF65A /* HealthKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		2891FE401BF4902500349632 /* MedicineInputTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2891FE3F1BF4902500349632 /* MedicineInputTableViewController.swift */; };
 		28ADA4F61C3F2E3B006614BA /* MessageComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28ADA4F51C3F2E3B006614BA /* MessageComposer.swift */; };
 		28BD37F61BFA1930005023EB /* ConfigurationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD37F51BFA1930005023EB /* ConfigurationTableViewController.swift */; };
@@ -77,6 +80,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2826D3E71CAC500C00A9FF71 /* DataSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSingleton.swift; sourceTree = "<group>"; };
 		2827D31B1BF4F76D00C23D34 /* RepeatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatTableViewController.swift; sourceTree = "<group>"; };
 		285D44631BECF2C900E37B10 /* MyHealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyHealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		285D44661BECF2C900E37B10 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -101,14 +105,16 @@
 		285D44A51BECF77400E37B10 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		285D44A71BECF77400E37B10 /* MyHealthWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "MyHealthWatch Extension.entitlements"; sourceTree = "<group>"; };
 		285D44AA1BED209D00E37B10 /* MyHealth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MyHealth.entitlements; sourceTree = "<group>"; };
-		285D44AB1BED209D00E37B10 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		285D44B11BEE8BAC00E37B10 /* MedicineListTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicineListTVC.swift; sourceTree = "<group>"; };
 		285D44B31BEE8F6100E37B10 /* TodoMedicineItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoMedicineItem.swift; sourceTree = "<group>"; };
 		285D44B51BEE8FE700E37B10 /* TodoMedicineList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoMedicineList.swift; sourceTree = "<group>"; };
 		285D44B81BF07A8400E37B10 /* MedicineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicineTableViewController.swift; sourceTree = "<group>"; };
+		2881CADB1CAEF8E100A33CB7 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		288E028C1CAC62BF002FF65A /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		2891FE3F1BF4902500349632 /* MedicineInputTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicineInputTableViewController.swift; sourceTree = "<group>"; };
 		28ADA4F51C3F2E3B006614BA /* MessageComposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageComposer.swift; sourceTree = "<group>"; };
 		28BD37F51BFA1930005023EB /* ConfigurationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationTableViewController.swift; sourceTree = "<group>"; };
+		28EB83A81CADAC9D00410A92 /* MyHealthWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MyHealthWatch.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				285D44AC1BED209D00E37B10 /* HealthKit.framework in Frameworks */,
+				288E028D1CAC62BF002FF65A /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,7 +140,7 @@
 		285D445A1BECF2C900E37B10 = {
 			isa = PBXGroup;
 			children = (
-				285D44AB1BED209D00E37B10 /* HealthKit.framework */,
+				288E028C1CAC62BF002FF65A /* HealthKit.framework */,
 				285D44A51BECF77400E37B10 /* HealthKit.framework */,
 				285D44651BECF2C900E37B10 /* MyHealth */,
 				285D447D1BECF2EA00E37B10 /* MyHealthWatch */,
@@ -172,6 +178,8 @@
 				2827D31B1BF4F76D00C23D34 /* RepeatTableViewController.swift */,
 				28BD37F51BFA1930005023EB /* ConfigurationTableViewController.swift */,
 				28ADA4F51C3F2E3B006614BA /* MessageComposer.swift */,
+				2826D3E71CAC500C00A9FF71 /* DataSingleton.swift */,
+				2881CADB1CAEF8E100A33CB7 /* Constants.swift */,
 			);
 			path = MyHealth;
 			sourceTree = "<group>";
@@ -179,6 +187,7 @@
 		285D447D1BECF2EA00E37B10 /* MyHealthWatch */ = {
 			isa = PBXGroup;
 			children = (
+				28EB83A81CADAC9D00410A92 /* MyHealthWatch.entitlements */,
 				285D447E1BECF2EA00E37B10 /* Interface.storyboard */,
 				285D44811BECF2EA00E37B10 /* Assets.xcassets */,
 				285D44831BECF2EA00E37B10 /* Info.plist */,
@@ -279,6 +288,9 @@
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = J62AZ87M8K;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.HealthKit = {
 								enabled = 1;
 							};
@@ -286,11 +298,20 @@
 					};
 					285D447B1BECF2EA00E37B10 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = J62AZ87M8K;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					285D44871BECF2EA00E37B10 = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = J62AZ87M8K;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.HealthKit = {
 								enabled = 1;
 							};
@@ -356,6 +377,7 @@
 				285D446B1BECF2C900E37B10 /* SecondViewController.swift in Sources */,
 				285D44B41BEE8F6100E37B10 /* TodoMedicineItem.swift in Sources */,
 				285D44B61BEE8FE700E37B10 /* TodoMedicineList.swift in Sources */,
+				2826D3E81CAC500C00A9FF71 /* DataSingleton.swift in Sources */,
 				285D44B91BF07A8400E37B10 /* MedicineTableViewController.swift in Sources */,
 				2827D31C1BF4F76D00C23D34 /* RepeatTableViewController.swift in Sources */,
 				285D44B21BEE8BAC00E37B10 /* MedicineListTVC.swift in Sources */,
@@ -364,6 +386,7 @@
 				28BD37F61BFA1930005023EB /* ConfigurationTableViewController.swift in Sources */,
 				285D44691BECF2C900E37B10 /* FirstViewController.swift in Sources */,
 				28ADA4F61C3F2E3B006614BA /* MessageComposer.swift in Sources */,
+				2881CADC1CAEF8E100A33CB7 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +398,7 @@
 				285D44921BECF2EA00E37B10 /* ExtensionDelegate.swift in Sources */,
 				285D44901BECF2EA00E37B10 /* InterfaceController.swift in Sources */,
 				285D44961BECF2EA00E37B10 /* GlanceController.swift in Sources */,
+				2826D3E91CAC520300A9FF71 /* DataSingleton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -568,6 +592,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MyHealthWatch/MyHealthWatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = MyHealthWatch_Extension;
@@ -585,6 +610,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MyHealthWatch/MyHealthWatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = MyHealthWatch_Extension;

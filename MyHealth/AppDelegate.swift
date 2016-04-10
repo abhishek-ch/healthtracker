@@ -38,7 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let firstAction:UIMutableUserNotificationAction = UIMutableUserNotificationAction()
         firstAction.identifier = "FIRST_ACTION"
         firstAction.title = "Not Required"
-        
         firstAction.activationMode = UIUserNotificationActivationMode.Background
         firstAction.destructive = true
         firstAction.authenticationRequired = false
@@ -47,7 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let secondAction:UIMutableUserNotificationAction = UIMutableUserNotificationAction()
         secondAction.identifier = "SECOND_ACTION"
         secondAction.title = "Open App"
-        
         secondAction.activationMode = UIUserNotificationActivationMode.Background
         secondAction.destructive = false
         secondAction.authenticationRequired = false
@@ -56,10 +54,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let thirdAction:UIMutableUserNotificationAction = UIMutableUserNotificationAction()
         thirdAction.identifier = "THIRD_ACTION"
         thirdAction.title = "Return Home"
-        
         thirdAction.activationMode = UIUserNotificationActivationMode.Background
         thirdAction.destructive = false
         thirdAction.authenticationRequired = false
+        
+        
+        // category for Heart rate
+        /** It create category for c3 events to be triggered **/
+        let firstCategory:UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
+        firstCategory.identifier = "FIRST_CATEGORY"
+        
+        let defaultActions:NSArray = [firstAction, secondAction, thirdAction]
+        let minimalActions:NSArray = [firstAction, secondAction]
+        
+        firstCategory.setActions(defaultActions as? [UIUserNotificationAction], forContext: UIUserNotificationActionContext.Default)
+        firstCategory.setActions(minimalActions as? [UIUserNotificationAction], forContext: UIUserNotificationActionContext.Minimal)
         
         
         /** Defination of Reminder Action **/
@@ -88,21 +97,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         
+        //Excercise Reminder
+        /** Defination of Reminder Action **/
+        let excerciseReminder = UIMutableUserNotificationAction()
+        excerciseReminder.identifier = "EXCERCISE_DONE" // the unique identifier for this action
+        excerciseReminder.title = "Complete" // title for the action button
+        excerciseReminder.activationMode = .Background // UIUserNotificationActivationMode.Background - don't bring app to foreground
+        excerciseReminder.authenticationRequired = false // don't require unlocking before performing action
+        excerciseReminder.destructive = true // display action in red
         
-        // category for Heart rate
-        /** It create category for c3 events to be triggered **/
-        let firstCategory:UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
-        firstCategory.identifier = "FIRST_CATEGORY"
+        /** This will allow notification to pop up every 30 minutes in the user screen **/
+        let remindActionAgain = UIMutableUserNotificationAction()
+        remindActionAgain.identifier = "REMIND_DONE"
+        remindActionAgain.title = "Remind in 30 minutes"
+        remindActionAgain.activationMode = .Background
+        remindActionAgain.destructive = false
+
         
-        let defaultActions:NSArray = [firstAction, secondAction, thirdAction]
-        let minimalActions:NSArray = [firstAction, secondAction]
+        /** Following wraps todo action ie either complete of remind after 30 minutes
+         into a category
+         **/
+        let excerciseCategory = UIMutableUserNotificationCategory() // notification categories allow us to create groups of actions that we can associate with a notification
+        excerciseCategory.identifier = "EXCERCISE_CATEGORY"
+        excerciseCategory.setActions([remindActionAgain, excerciseReminder], forContext: .Default) // UIUserNotificationActionContext.Default (4 actions max)
+        excerciseCategory.setActions([excerciseReminder, remindActionAgain], forContext: .Minimal) // UIUserNotificationActionContext.Minimal - for when space is limited (2 actions max)
         
-        firstCategory.setActions(defaultActions as? [UIUserNotificationAction], forContext: UIUserNotificationActionContext.Default)
-        firstCategory.setActions(minimalActions as? [UIUserNotificationAction], forContext: UIUserNotificationActionContext.Minimal)
         
+        
+        
+
         // NSSet of all our categories
         
-        let categories:NSSet = NSSet(objects: firstCategory,todoCategory)
+        let categories:NSSet = NSSet(objects: firstCategory,todoCategory,excerciseCategory)
         
         
         //establish notification
@@ -154,8 +180,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              
              the completionHandler is called.
              **/
-            
-        let item = TodoMedicineItem(deadline: notification.fireDate!, title: notification.userInfo!["title"] as! String, UUID: notification.userInfo!["UUID"] as! String!)
+        
+        print("notificationnotificationnotification ",notification)
+        print("notification.userInfo! ",notification.userInfo)
+        if notification.userInfo != nil {
+            let item = TodoMedicineItem(deadline: notification.fireDate!, title: notification.userInfo!["title"] as! String, UUID: notification.userInfo!["UUID"] as! String!)
             
             
             switch (identifier!) {
@@ -170,7 +199,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             default: // switch statements must be exhaustive - this condition should never be met
                 print("Error: unexpected notification action identifier!")
             }
-            
+        }
+        
+
+      
+        
+     
+        
             completionHandler()
             
     }

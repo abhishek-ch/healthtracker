@@ -12,6 +12,8 @@ import Foundation
 import HealthKit
 import UIKit
 
+
+
 /** Watch Notification & Controller **/
 class InterfaceController: WKInterfaceController,HKWorkoutSessionDelegate {
     
@@ -54,7 +56,7 @@ class InterfaceController: WKInterfaceController,HKWorkoutSessionDelegate {
         super.willActivate()
         
         
-        defaults.setDouble(58.0, forKey: "heartRate")
+//        defaults.setDouble(58.0, forKey: "heartRate")
         
         // If HealthStore is not accesible or user denies the access
         guard HKHealthStore.isHealthDataAvailable() == true else {
@@ -129,6 +131,8 @@ class InterfaceController: WKInterfaceController,HKWorkoutSessionDelegate {
 
     }
     
+
+    
     
     
     let countPerMinuteUnit = HKUnit(fromString: "count/min")
@@ -151,6 +155,8 @@ class InterfaceController: WKInterfaceController,HKWorkoutSessionDelegate {
                     abort()
                 }else{
                     print("Save Done ",heartRateSample)
+            
+                    
                 }
                 
             }
@@ -170,9 +176,19 @@ class InterfaceController: WKInterfaceController,HKWorkoutSessionDelegate {
     
     
     
-    
+    let defaultsGrp = NSUserDefaults(suiteName: "group.com.myheart.health.MyHealth")
     // save the workout
     @IBAction func saveBtnPressed() {
+        
+        if self.minHeartRate < 55.0 {
+            print("Heart Rate crossed Minimum")
+            defaultsGrp?.setDouble(self.minHeartRate, forKey: "heartRateMain")
+            
+        }else if self.maxHeartRate > 60.0 {
+            print("Heart rate Crossed Maximum")
+            defaultsGrp?.setDouble(self.maxHeartRate, forKey: "heartRateMain")
+        }
+        defaultsGrp?.synchronize()
         saveWorkout()
 
     }
@@ -180,6 +196,7 @@ class InterfaceController: WKInterfaceController,HKWorkoutSessionDelegate {
     //triggers the workout session
     @IBAction func startBtnPressed() {
         healthStore.startWorkoutSession(workoutSession)
+        
     }
     
     @IBAction func stopBtnPressed() {
@@ -237,27 +254,54 @@ class InterfaceController: WKInterfaceController,HKWorkoutSessionDelegate {
     
     
     let defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    var maxHeartRate:Double = 60.0
+    var minHeartRate:Double = 24.0
+
     
     //updates heart rate, here can be schedule if heart rate crosses certain level
     func updateHeartRate(samples: [HKSample]?) {
         guard let heartRateSamples = samples as? [HKQuantitySample] else {return}
-     
+      
+       
+//        defaultsGrp.setDouble(99.0, forKey: "heartRateMain")
+//        defaultsGrp.synchronize()
+//        print("SETING THE VAKUE LAUNDEeeeeeeee ",defaultsGrp.doubleForKey("heartRateMain"))
         //let max_heart_rate = defaults.valueForKey("hearyRate") as? Int
         
-
+        DataSingleton.sharedInstance.heartRate = 96.0
         
-        dispatch_async(dispatch_get_main_queue()) {
+        dispatch_sync(dispatch_get_main_queue()) {
             guard let sample = heartRateSamples.first else{return}
             let value = sample.quantity.doubleValueForUnit(self.heartRateUnit)
             let default_heartRate = self.defaults.doubleForKey("heartRate")
+            
+            
+            self.maxHeartRate = max(self.maxHeartRate,value)
+            self.minHeartRate = max(self.minHeartRate,value)
+           
+
+//            print("WHAT IS THE VALUE :) ",DataSingleton.sharedInstance.heartRate)
+            //defaultsGrp!.setDouble(value, forKey: "heartRateMain")
+//            if let defaultsgp = NSUserDefaults(suiteName: appGroupID) {
+//                defaultsgp.setValue(value, forKey: "heartRateMain")
+//            }
+
+            if let phoneTF = self.defaults.stringForKey("phoneTF")
+            {
+                print("phonssseTF",phoneTF)
+            }
            // print("Valueeee==> ", value)
             if(default_heartRate < value && (value > 60.0 || value < 55.0)){
+                
+//               print("DFINALALLALALALALLAAL :) ",DataSingleton.sharedInstance.heartRate)
           
                 self.defaults.setDouble(value, forKey: "heartRate")
                 //self.defaults.setInteger(UInt16(value), forKey: "heartRate")
                 //self.defaults.setObject(value, forKey: "heartRate")
                 self.defaults.synchronize()
-                print("The value now is ",self.defaults.doubleForKey("heartRate"))
+//                print("The value now is=s> ",self.defaults.doubleForKey("heartRate"))
+                
+                
             }
             
 
@@ -271,6 +315,10 @@ class InterfaceController: WKInterfaceController,HKWorkoutSessionDelegate {
             self.updateDeviceName(name)
             self.animateHeart()
         }
+        
+        
+        
+        
     }
     
     

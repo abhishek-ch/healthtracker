@@ -85,7 +85,7 @@ class TodoMedicineList{
     //promt user with re-reminder after X number of minutes
     func scheduleReminderforItem(item: TodoMedicineItem) {
         let notification = UILocalNotification() // create a new reminder notification
-        notification.alertBody = "Reminder: Todo Item \"\(item.title)\" Is Overdue" // text that will be displayed in the notification
+        notification.alertBody = "Medicine Intake\"\(item.title)\" Is Overdue" // text that will be displayed in the notification
         notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
         notification.fireDate = NSDate().dateByAddingTimeInterval(30 * 60) // 30 minutes from current time
         notification.soundName = UILocalNotificationDefaultSoundName // play default sound
